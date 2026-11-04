@@ -7,9 +7,10 @@ mergeInto(LibraryManager.library, {
         let geminiStreamRequest = UTF8ToString(geminiStreamRequestPtr);
         let decoder = new TextDecoder("utf-8");
 
-        if (document.geminiAbortController == null) {
-            document.geminiAbortController = new AbortController();
+        if (document.geminiAbortController != null) {
+            document.geminiAbortController.abort();
         }
+        document.geminiAbortController = new AbortController();
 
         fetch(url + "?key=" + apiKey, {
             headers: {
@@ -49,7 +50,9 @@ mergeInto(LibraryManager.library, {
 
     AbortGeminiMessageStreamJS: function() {
         console.log("Abort Gemini at AbortGeminiMessageStreamJS");
-        document.geminiAbortController.abort();
-        document.geminiAbortController = null;
+        if (document.geminiAbortController != null) {
+            document.geminiAbortController.abort();
+            document.geminiAbortController = null;
+        }
     }
 });

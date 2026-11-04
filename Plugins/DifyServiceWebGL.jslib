@@ -8,9 +8,10 @@ mergeInto(LibraryManager.library, {
         let difyStreamRequest = UTF8ToString(difyStreamRequestPtr);
         let decoder = new TextDecoder("utf-8");
 
-        if (document.difyAbortController == null) {
-            document.difyAbortController = new AbortController();
+        if (document.difyAbortController != null) {
+            document.difyAbortController.abort();
         }
+        document.difyAbortController = new AbortController();
 
         fetch(url, {
             headers: {
@@ -51,7 +52,9 @@ mergeInto(LibraryManager.library, {
 
     AbortDifyMessageStreamJS: function() {
         console.log("Abort Dify at AbortDifyMessageStreamJS");
-        document.difyAbortController.abort();
-        document.difyAbortController = null;
+        if (document.difyAbortController != null) {
+            document.difyAbortController.abort();
+            document.difyAbortController = null;
+        }
     }
 });
