@@ -7,9 +7,10 @@ mergeInto(LibraryManager.library, {
         let chatCompletionRequest = UTF8ToString(chatCompletionRequestPtr);
         let decoder = new TextDecoder("utf-8");
 
-        if (document.chatGPTAbortController == null) {
-            document.chatGPTAbortController = new AbortController();
+        if (document.chatGPTAbortController != null) {
+            document.chatGPTAbortController.abort();
         }
+        document.chatGPTAbortController = new AbortController();
 
         fetch(url, {
             headers: {
@@ -51,7 +52,9 @@ mergeInto(LibraryManager.library, {
 
     AbortChatCompletionJS: function() {
         console.log("Abort ChatGPT at AbortChatCompletionJS");
-        document.chatGPTAbortController.abort();
-        document.chatGPTAbortController = null;
+        if (document.chatGPTAbortController != null) {
+            document.chatGPTAbortController.abort();
+            document.chatGPTAbortController = null;
+        }
     }
 });

@@ -7,9 +7,10 @@ mergeInto(LibraryManager.library, {
         let claudeStreamRequest = UTF8ToString(claudeStreamRequestPtr);
         let decoder = new TextDecoder("utf-8");
 
-        if (document.claudeAbortController == null) {
-            document.claudeAbortController = new AbortController();
+        if (document.claudeAbortController != null) {
+            document.claudeAbortController.abort();
         }
+        document.claudeAbortController = new AbortController();
 
         fetch(url, {
             headers: {
@@ -53,7 +54,9 @@ mergeInto(LibraryManager.library, {
 
     AbortClaudeMessageStreamJS: function() {
         console.log("Abort Claude at AbortClaudeMessageStreamJS");
-        document.claudeAbortController.abort();
-        document.claudeAbortController = null;
+        if (document.claudeAbortController != null) {
+            document.claudeAbortController.abort();
+            document.claudeAbortController = null;
+        }
     }
 });

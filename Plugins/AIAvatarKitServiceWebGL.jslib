@@ -7,9 +7,10 @@ mergeInto(LibraryManager.library, {
         let aakHeaders = JSON.parse(UTF8ToString(aakHeadersPtr));
         let decoder = new TextDecoder("utf-8");
 
-        if (document.aakAbortController == null) {
-            document.aakAbortController = new AbortController();
+        if (document.aakAbortController != null) {
+            document.aakAbortController.abort();
         }
+        document.aakAbortController = new AbortController();
 
         let headers = { "Content-Type": "application/json" };
         for (let key in aakHeaders) {
@@ -51,7 +52,9 @@ mergeInto(LibraryManager.library, {
 
     AbortAIAvatarKitMessageStreamJS: function() {
         console.log("Abort AIAvatarKit at AbortAIAvatarKitMessageStreamJS");
-        document.aakAbortController.abort();
-        document.aakAbortController = null;
+        if (document.aakAbortController != null) {
+            document.aakAbortController.abort();
+            document.aakAbortController = null;
+        }
     }
 });
